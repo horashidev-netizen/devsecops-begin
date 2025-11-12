@@ -33,20 +33,17 @@ jobs:
       # Di chuyển vào thư mục backend, cài đặt dependencies
       - name: Cai dat dependencies cho Backend
         run: |
-          cd backend
           npm install
         
       # Bước 3: Chạy SAST (Quét bí mật)
       - name: (SAST) San lung bi mat
         run: |
-          cd backend
           # --no-color để output sạch hơn trong log
           npm run lint:secret -- --no-color
           
       # Bước 4: Chạy SCA (Quét thư viện)
       - name: (SCA) Kiem tra thu vien (npm audit)
         run: |
-          cd backend
           # Chạy npm audit với mức độ nghiêm trọng 'high'
           # Nếu tìm thấy lỗi 'high', nó sẽ thoát với mã lỗi > 0 và làm pipeline thất bại
           npm audit --audit-level=high
