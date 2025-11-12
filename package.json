@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:secret": "secretlint \"server.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
+    "secretlint": "^11.2.5"
+  },
+  "dependencies": {
+    "express": "^4.16.0"
+  }
+}
