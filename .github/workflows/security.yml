@@ -1,0 +1,54 @@
+# file: .github/workflows/security.yml
+
+name: Kiem tra An ninh DevSecOps
+
+# 1. KÍCH HOẠT: Chạy khi nào?
+# Chạy mỗi khi có code được đẩy (push) lên nhánh 'main' (hoặc 'master')
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+# 2. CÔNG VIỆC: Làm gì?
+jobs:
+  # Đặt tên cho công việc
+  security-check:
+    # Chạy trên một máy ảo Ubuntu mới nhất
+    runs-on: ubuntu-latest
+
+    # 3. CÁC BƯỚC:
+    steps:
+      # Bước 1: Lấy code từ kho chứa về máy ảo
+      - name: Kiem tra code (Checkout)
+        uses: actions/checkout@v3
+
+      # Bước 2: Cài đặt Node.js
+      - name: Cai dat Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Bạn có thể đổi phiên bản Node nếu muốn
+
+      # --- PHẦN BACKEND ---
+      # Di chuyển vào thư mục backend, cài đặt dependencies
+      - name: Cai dat dependencies cho Backend
+        run: |
+          cd backend
+          npm install
+        
+      # Bước 3: Chạy SAST (Quét bí mật)
+      - name: (SAST) San lung bi mat
+        run: |
+          cd backend
+          # --no-color để output sạch hơn trong log
+          npm run lint:secret -- --no-color
+          
+      # Bước 4: Chạy SCA (Quét thư viện)
+      - name: (SCA) Kiem tra thu vien (npm audit)
+        run: |
+          cd backend
+          # Chạy npm audit với mức độ nghiêm trọng 'high'
+          # Nếu tìm thấy lỗi 'high', nó sẽ thoát với mã lỗi > 0 và làm pipeline thất bại
+          npm audit --audit-level=high
+
+      # Bạn có thể thêm các bước cho frontend (npm audit, lint...) ở đây
