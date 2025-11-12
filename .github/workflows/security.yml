@@ -39,7 +39,7 @@ jobs:
       - name: (SAST) San lung bi mat
         run: |
           # --no-color để output sạch hơn trong log
-          npm run lint:secret -- --no-color
+          npm run lint:secret
           
       # Bước 4: Chạy SCA (Quét thư viện)
       - name: (SCA) Kiem tra thu vien (npm audit)
